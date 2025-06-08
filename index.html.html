@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MounUp</title>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #27ae60;
+      --text-color: #333;
+      --background: #f4f4f4;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--background);
+      color: var(--text-color);
+    }
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 1rem;
+      position: relative;
+    }
+    header h1 {
+      text-align: center;
+    }
+    #userWelcome {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 0.9rem;
+    }
+    nav {
+      background-color: #1a252f;
+      padding: 0.5rem;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    main section {
+      display: none;
+      padding: 2rem 1rem;
+    }
+    main section.active {
+      display: block;
+    }
+    #beranda {
+      text-align: center;
+    }
+    #tentangKamiDeskripsi {
+      margin-top: 1rem;
+      max-width: 600px;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+      display: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .produk-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .produk {
+      background: rgb(216, 201, 201);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .produk img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    .produk button {
+      margin: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--secondary-color);
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .keranjang-item {
+      background: rgb(236, 218, 218);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .keranjang-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+    }
+    .form-auth {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .form-auth input {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form-auth button {
+      width: 100%;
+      padding: 0.5rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .checkout-btn, .selesai-btn {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #infoPembayaran {
+      margin-top: 1rem;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+      nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .keranjang-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MounUp</h1>
+    <div id="userWelcome"><a href="#" onclick="showSection('login')" style="color: white;">Login</a></div>
+  </header>
+  <nav>
+    <ul>
+      <li><a onclick="showSection('beranda')">Beranda</a></li>
+      <li><a onclick="showSection('produk')">Produk</a></li>
+      <li><a onclick="showSection('keranjang')">Keranjang</a></li>
+      <li><a onclick="showSection('kontak')">Kontak</a></li>
+    </ul>
+  </nav>
+  <main>
+    <section id="beranda" class="active">
+      <h2>Selamat Datang</h2>
+      <p>Belanja perlengkapan outdoor terbaik di sini!</p>
+      <button onclick="toggleTentangKami()">Tentang Kami</button>
+      <div id="tentangKamiDeskripsi">
+        <h3>Tentang MounUp</h3>
+        <p>MounUp adalah toko perlengkapan outdoor terpercaya yang menyediakan berbagai kebutuhan mendaki, berkemah, dan petualangan alam lainnya. Kami menyediakan produk berkualitas tinggi untuk menunjang aktivitas alam bebas Anda.</p>
+      </div>
+    </section>
+
+    <section id="produk">
+      <h2>Produk Kami</h2>
+      <div class="produk-list" id="produkList"></div>
+    </section>
+
+    <section id="keranjang">
+      <h2>Keranjang Belanja</h2>
+      <div id="keranjangList"></div>
+      <h3 id="totalHarga"></h3>
+      <button class="checkout-btn" onclick="checkoutKeranjang()">Checkout</button>
+    </section>
+
+    <section id="pembayaran">
+      <h2>Pilih Metode Pembayaran</h2>
+      <div id="pembayaranDetail"></div>
+      <div class="pembayaran-metode">
+        <label><input type="radio" name="bayar" value="BRI" onchange="tampilkanInfoPembayaran(this.value)"> BRI</label>
+        <label><input type="radio" name="bayar" value="BNI" onchange="tampilkanInfoPembayaran(this.value)"> BNI</label>
+        <label><input type="radio" name="bayar" value="BCA" onchange="tampilkanInfoPembayaran(this.value)"> BCA</label>
+        <label><input type="radio" name="bayar" value="OVO" onchange="tampilkanInfoPembayaran(this.value)"> OVO</label>
+        <label><input type="radio" name="bayar" value="DANA" onchange="tampilkanInfoPembayaran(this.value)"> DANA</label>
+      </div>
+      <div id="infoPembayaran"></div>
+      <button class="selesai-btn" onclick="selesaikanPembayaran()">Selesaikan Pembayaran</button>
+    </section>
+
+    <section id="kontak">
+      <h2>Kontak Kami</h2>
+      <p>Email: mounupoutdoor@gmail.com</p>
+      <p>Instagram : mounUpoutdoor_</p>
+      <p>No Tlp : 0852-3333-4444 </p>
+    </section>
+
+    <section id="login">
+      <h2>Masuk / Daftar</h2>
+      <form class="form-auth" onsubmit="handleLogin(event)">
+        <input id="inputNama" type="text" placeholder="Nama Pengguna" required />
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Kata Sandi" required />
+        <button type="submit">Login</button>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 MounUp</p>
+  </footer>
+
+<script>
+const produkData = [
+  { id: 0, nama: "Tas Gunung 50L", harga: 1000000, foto:"gambar/carrier.jpg"},
+  { id: 1, nama: "Sepatu Hiking", harga: 500000, foto:"gambar/sepatu.jpg" },
+  { id: 2, nama: "Tenda 4 Orang", harga: 1500000, foto:"gambar/tenda.jpg" },
+  { id: 3, nama: "Headlamp LED", harga: 85000, foto:"gambar/headlamp.jpg" },
+  { id: 4, nama: "Sleeping Bag", harga: 280000, foto:"gambar/sleepingbag.jpg" },
+  { id: 5, nama: "Jaket Outdoor", harga: 330000, foto:"gambar/jaket.jpg" },
+];
+
+let keranjang = JSON.parse(localStorage.getItem('keranjang')) || [];
+let user = localStorage.getItem('user') || '';
+function showSection(id) {
+  document.querySelectorAll('main section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'produk') renderProduk();
+  if (id === 'keranjang') renderKeranjang();
+  updateUserWelcome();
+}
+
+function renderProduk() {
+  const list = document.getElementById('produkList');
+  list.innerHTML = '';
+  produkData.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'produk';
+    div.innerHTML = `
+      <img src="${p.foto}" alt="${p.nama}">
+      <h3>${p.nama}</h3>
+      <p>Rp ${p.harga.toLocaleString()}</p>
+      <button onclick="tambahKeranjang(${p.id})">+ Keranjang</button>
+      <button onclick="beliLangsung('${p.nama}', ${p.harga})">Beli Sekarang</button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function tambahKeranjang(id) {
+  const item = keranjang.find(k => k.id === id);
+  if (item) {
+    item.jumlah++;
+  } else {
+    const produk = produkData.find(p => p.id === id);
+    keranjang.push({ ...produk, jumlah: 1 });
+  }
+  localStorage.setItem('keranjang', JSON.stringify(keranjang));
+  alert('Produk ditambahkan ke keranjang');
+}
+
+function renderKeranjang() {
+  const list = document.getElementById('keranjangList');
+  const totalText = document.getElementById('totalHarga');
+  list.innerHTML = '';
+  let total = 0;
+  keranjang.forEach((p, i) => {
+    total += p.harga * p.jumlah;
+    const div = document.createElement('div');
+    div.className = 'keranjang-item';
+    div.innerHTML = `
+      <img src="${p.foto}" alt="${p.nama}">
+      <div>
+        <h4>${p.nama}</h4>
+        <p>Harga: Rp ${p.harga.toLocaleString()}</p>
+        <p>Jumlah: ${p.jumlah}
+          <button onclick="ubahJumlah(${i}, -1)">-</button>
+          <button onclick="ubahJumlah(${i}, 1)">+</button>
+          <button onclick="hapusItem(${i})">Hapus</button>
+        </p>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+  totalText.innerText = `Total Harga: Rp ${total.toLocaleString()}`;
+}
+
+function ubahJumlah(index, delta) {
+  keranjang[index].jumlah += delta;
+  if (keranjang[index].jumlah < 1) keranjang.splice(index, 1);
+  localStorage.setItem('keranjang', JSON.stringify(keranjang));
+  renderKeranjang();
+}
+
+function hapusItem(index) {
+  keranjang.splice(index, 1);
+  localStorage.setItem('keranjang', JSON.stringify(keranjang));
+  renderKeranjang();
+}
+
+function beliLangsung(namaProduk, harga) {
+  if (!user) {
+    alert("Silakan login terlebih dahulu.");
+    showSection('login');
+    return;
+  }
+  tampilkanPembayaran({ nama: namaProduk, harga });
+}
+
+function checkoutKeranjang() {
+  if (keranjang.length === 0) {
+    alert("Keranjang kosong.");
+    return;
+  }
+  const totalHarga = keranjang.reduce((acc, item) => acc + (item.harga * item.jumlah), 0);
+  tampilkanPembayaran({ nama: `Total ${keranjang.length} item`, harga: totalHarga });
+}
+
+function tampilkanPembayaran(dataPembelian) {
+  document.getElementById('pembayaranDetail').innerHTML = `
+    <h4>Produk: ${dataPembelian.nama}</h4>
+    <p>Harga: Rp ${dataPembelian.harga.toLocaleString()}</p>
+  `;
+  showSection('pembayaran');
+}
+
+function tampilkanInfoPembayaran(metode) {
+  const info = document.getElementById('infoPembayaran');
+  const data = {
+    BRI: 'No BRIVA: 12345-67890-123456',
+    BNI: 'No VA: 23456-78901-234567 (BNI)',
+    BCA: 'No VA: 34567-89012-345678 (BCA)',
+    OVO: 'OVO: 0812-3333-4444',
+    DANA: 'DANA: 0812-3333-4444'
+  };
+  info.innerHTML = `<p>${data[metode] || 'Silakan pilih metode pembayaran.'}</p>`;
+}
+
+function selesaikanPembayaran() {
+  keranjang = [];
+  localStorage.removeItem('keranjang');
+  alert("Pembayaran berhasil! Terima kasih telah berbelanja.");
+  showSection('beranda');
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const nama = document.getElementById('inputNama').value;
+  user = nama;
+  localStorage.setItem('user', nama);
+  alert(`Selamat datang, ${nama}`);
+  showSection('beranda');
+}
+
+function updateUserWelcome() {
+  const area = document.getElementById('userWelcome');
+  if (user) {
+    area.innerHTML = `👋 Hai, ${user}`;
+  } else {
+    area.innerHTML = `<a href="#" onclick="showSection('login')" style="color: white;">Login</a>`;
+  }
+}
+
+function toggleTentangKami() {
+  const el = document.getElementById("tentangKamiDeskripsi");
+  el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+updateUserWelcome();
+</script>
+</body>
+</html>
